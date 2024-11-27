@@ -1,0 +1,71 @@
+<div>
+  <button mat-button color="primary" (click)="onBack()">Back</button>
+</div>
+<mat-card class="weather-card">
+  <mat-card-header>
+    <mat-card-title>Current Weather in {{locationName}}</mat-card-title>
+  </mat-card-header>
+  @if (currentConditions) {
+  <mat-card-content>
+    <div class="weather-info">
+      <img [src]="'https://developer.accuweather.com/sites/default/files/' + 
+                       (currentConditions.WeatherIcon < 10 ? '0' : '') + 
+                       currentConditions.WeatherIcon + '-s.png'" alt="Weather Icon" class="weather-icon">
+      <div>
+        <h2>{{currentConditions.Temperature.Imperial.Value}}°F</h2>
+        <p>{{currentConditions.WeatherText}}</p>
+      </div>
+    </div>
+  </mat-card-content>
+  }
+
+  <mat-card-actions>
+    <button mat-button (click)="toggleFavorite()">
+      <mat-icon>{{isFavorite ? 'favorite' : 'favorite_border'}}</mat-icon>
+      {{isFavorite ? 'Remove from Favorites' : 'Add to Favorites'}}
+    </button>
+  </mat-card-actions>
+</mat-card>
+
+<mat-card class="forecast-card">
+  <mat-card-header>
+    <mat-card-title>Daily Forecast</mat-card-title>
+  </mat-card-header>
+  <mat-card-content>
+    <mat-list>
+      @for (day of dailyForecast; track $index) {
+      <mat-list-item>
+        <div class="forecast-item">
+          <span>{{day.Date | date:'EEE'}}</span>
+          <img [src]="'https://developer.accuweather.com/sites/default/files/' + 
+                           (day.Day.Icon < 10 ? '0' : '') + 
+                           day.Day.Icon + '-s.png'" alt="Weather Icon" class="forecast-icon">
+          <span>{{day?.Temperature.Maximum?.Value}}°{{day?.Temperature?.Maximum.Unit}} / {{day?.Temperature?.Minimum.Value}}°{{day?.Temperature?.Maximum.Unit}}</span>
+        </div>
+      </mat-list-item>
+      }
+    </mat-list>
+  </mat-card-content>
+</mat-card>
+
+<mat-card class="forecast-card">
+  <mat-card-header>
+    <mat-card-title>Hourly Forecast</mat-card-title>
+  </mat-card-header>
+  <mat-card-content>
+    <mat-list>
+      @for (hour of hourlyForecast | slice:0:12; track $index) {
+      <mat-list-item>
+        <div class="forecast-item">
+          <span class="days">{{hour?.DateTime | date:'HH:mm'}}</span>
+          <img [src]="'https://developer.accuweather.com/sites/default/files/' + 
+                           (hour.WeatherIcon < 10 ? '0' : '') + 
+                           hour.WeatherIcon + '-s.png'" alt="Weather Icon" class="forecast-icon">
+          <span>{{hour?.Temperature?.Value}}°{{hour?.Temperature?.Unit}}</span>
+        </div>
+      </mat-list-item>
+      }
+
+    </mat-list>
+  </mat-card-content>
+</mat-card>

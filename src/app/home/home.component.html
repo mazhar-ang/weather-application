@@ -1,0 +1,70 @@
+<div class="search-container">
+  <form [formGroup]="searchForm" (ngSubmit)="onSearch()">
+    <mat-form-field appearance="fill" class="search-field">
+      <mat-label>Search location</mat-label>
+      <input matInput formControlName="searchQuery">
+      <button mat-icon-button matSuffix type="submit">
+        <mat-icon>search</mat-icon>
+      </button>
+    </mat-form-field>
+  </form>
+</div>
+
+<div class="weather-container">
+  <mat-card class="weather-card">
+    <mat-card-header>
+      <mat-card-title>Current Weather in Philadelphia, PA</mat-card-title>
+    </mat-card-header>
+
+    @if (philadelphiaWeather) {
+    <mat-card-content>
+      <div class="weather-info">
+        <img [src]="'https://developer.accuweather.com/sites/default/files/' + 
+                         (philadelphiaWeather.WeatherIcon < 10 ? '0' : '') + 
+                         philadelphiaWeather.WeatherIcon + '-s.png'" alt="Weather Icon" class="weather-icon">
+        <div>
+          <h2>{{philadelphiaWeather.Temperature.Imperial.Value}}°F</h2>
+          <p>{{philadelphiaWeather.WeatherText}}</p>
+        </div>
+      </div>
+    </mat-card-content>
+    }
+
+  </mat-card>
+
+  <mat-card class="forecast-card">
+    <mat-card-header>
+      <mat-card-title>Five Day Forecast</mat-card-title>
+    </mat-card-header>
+    <mat-card-content>
+      <mat-list>
+
+        @for (day of fiveDayForecast; track $index) {
+        <mat-list-item>
+          <div class="forecast-item">
+            <span class="days">{{day.Date | date:'EEE'}}</span>
+            <img [src]="'https://developer.accuweather.com/sites/default/files/' + 
+                             (day.Day.Icon < 10 ? '0' : '') + 
+                             day.Day.Icon + '-s.png'" alt="Weather Icon" class="forecast-icon">
+            <span>{{day.Temperature.Maximum.Value}}°F / {{day.Temperature.Minimum.Value}}°F</span>
+          </div>
+        </mat-list-item>
+        }
+
+      </mat-list>
+    </mat-card-content>
+  </mat-card>
+</div>
+
+<mat-card class="favorites-card">
+  <mat-card-header>
+    <mat-card-title>Favorite Locations</mat-card-title>
+  </mat-card-header>
+  <mat-card-content>
+    <mat-list>
+      <mat-list-item *ngFor="let favorite of favorites">
+        <a [routerLink]="['/location', favorite.key]">{{favorite.name}}</a>
+      </mat-list-item>
+    </mat-list>
+  </mat-card-content>
+</mat-card>

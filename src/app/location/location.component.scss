@@ -1,0 +1,33 @@
+.weather-card, .forecast-card {
+    margin-bottom: 20px;
+  }
+  
+  .weather-info {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+  }
+  .days{
+    min-width: 50px;
+  }
+  
+  .weather-icon, .forecast-icon {
+    width: 75px;
+    height: 75px;
+    object-fit: contain;
+  }
+  
+  .forecast-item {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+  }
+  
+  @media (max-width: 600px) {
+    .weather-info {
+      flex-direction: column;
+      align-items: flex-start;
+    }
+  }
+  
